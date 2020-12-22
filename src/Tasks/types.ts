@@ -2,7 +2,7 @@ export enum CATEGORY {
   TESTING_TASK = "testing_task",
   PRODUCT_REQUEST = "product_request",
   REFACTOR = "refactor",
-  DEV_TASK = "dev_task",
+  DEV_TASK = "development_task",
   DESIGN_REQUEST = "design_request",
   MISC = "miscellaneous",
 }

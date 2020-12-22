@@ -4,7 +4,7 @@ import { Task, TaskInCreate } from "./types";
 
 export const getTasks = async (): Promise<Task[]> => {
   try {
-    const { data } = await axios.get("http://localhost:8000/tasks");
+    const { data } = await axios.get("http://localhost:8000/tasks/");
     return data.map((t: any) => convertToTask(t));
   } catch (error) {
     throw Error("Not able to fetch all tasks.");
@@ -12,7 +12,7 @@ export const getTasks = async (): Promise<Task[]> => {
 };
 export const createTask = async (t: TaskInCreate): Promise<Task> => {
   try {
-    const { data } = await axios.post(`http://localhost:8000/tasks`, {
+    const { data } = await axios.post(`http://localhost:8000/tasks/`, {
       ...convertTaskInCreateToJson(t),
     });
     return convertToTask(data);
@@ -23,7 +23,7 @@ export const createTask = async (t: TaskInCreate): Promise<Task> => {
 
 export const updateTask = async (t: Task): Promise<Task> => {
   try {
-    const { data } = await axios.put(`http://localhost:8000/tasks/${t.id}`, {
+    const { data } = await axios.put(`http://localhost:8000/tasks/${t.id}/`, {
       ...convertTaskToJson(t),
     });
     return convertToTask(data);
@@ -34,7 +34,7 @@ export const updateTask = async (t: Task): Promise<Task> => {
 
 export const deleteTask = async (t: Task): Promise<string> => {
   try {
-    await axios.delete(`http://localhost:8000/tasks/${t.id}`);
+    await axios.delete(`http://localhost:8000/tasks/${t.id}/`);
     return t.id;
   } catch (error) {
     throw Error("Not able to delete the task.");

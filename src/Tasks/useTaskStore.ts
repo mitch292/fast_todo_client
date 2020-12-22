@@ -23,7 +23,7 @@ export const useTaskStore = create<State>((set) => ({
     set((state) => {
       const newTasks = state.tasks.slice();
       const index = newTasks.findIndex((task) => task.id === t.id);
-      delete newTasks[index];
+      newTasks.splice(index, 1);
       return { tasks: newTasks };
     }),
   create: (t: Task) =>
