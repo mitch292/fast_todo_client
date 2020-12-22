@@ -29,7 +29,7 @@ export const useTaskStore = create<State>((set) => ({
   create: (t: Task) =>
     set((state) => {
       const newTasks = state.tasks.slice();
-      newTasks.push(t);
+      newTasks.unshift(t);
       return { tasks: newTasks };
     }),
   setTasks: (t: Task[]) => set((state) => ({ tasks: t })),

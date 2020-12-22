@@ -3,21 +3,13 @@ import { View, StyleSheet, Text, TextStyle, Pressable } from "react-native-web";
 
 import { BsCheckCircle, BsTrash } from "react-icons/bs";
 
-import { Task as TaskType, CATEGORY } from "./types";
+import { Task as TaskType } from "./types";
+import { categoryLookup } from "./util";
 import { useTaskStore } from "./useTaskStore";
 import { updateTask, deleteTask } from "./services";
 
 type Props = {
   task: TaskType;
-};
-
-const categoryLookup = {
-  [CATEGORY.TESTING_TASK]: "Testing Task",
-  [CATEGORY.PRODUCT_REQUEST]: "Product Request",
-  [CATEGORY.REFACTOR]: "Existing Code Refactor",
-  [CATEGORY.DEV_TASK]: "Development Task",
-  [CATEGORY.DESIGN_REQUEST]: "Design Request",
-  [CATEGORY.MISC]: "Miscellaneous",
 };
 
 const styles = StyleSheet.create({
@@ -43,16 +35,16 @@ const styles = StyleSheet.create({
     minWidth: 250,
     borderRightWidth: 1,
     marginLeft: 10,
+    color: "#002b36",
   },
   checkMark: {
     paddingVertical: 5,
     paddingHorizontal: 10,
-    maxWidth: 25,
-    minWidth: 25,
   },
   trashCan: {
     marginHorizontal: 20,
     color: "#dc322f",
+    opacity: 0.5,
   },
 });
 

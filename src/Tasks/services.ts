@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { Task } from "./types";
+import { Task, TaskInCreate } from "./types";
 
 export const getTasks = async (): Promise<Task[]> => {
   try {
@@ -10,11 +10,21 @@ export const getTasks = async (): Promise<Task[]> => {
     throw Error("Not able to fetch all tasks.");
   }
 };
+export const createTask = async (t: TaskInCreate): Promise<Task> => {
+  try {
+    const { data } = await axios.post(`http://localhost:8000/tasks`, {
+      ...convertTaskInCreateToJson(t),
+    });
+    return convertToTask(data);
+  } catch (error) {
+    throw Error("Not able to create the task.");
+  }
+};
 
 export const updateTask = async (t: Task): Promise<Task> => {
   try {
     const { data } = await axios.put(`http://localhost:8000/tasks/${t.id}`, {
-      ...convertToJson(t),
+      ...convertTaskToJson(t),
     });
     return convertToTask(data);
   } catch (error) {
@@ -33,8 +43,6 @@ export const deleteTask = async (t: Task): Promise<string> => {
 
 const convertToTask = (rawTask: any): Task => {
   return {
-    createdAt: new Date(rawTask.created_at),
-    updatedAt: new Date(rawTask.updated_at),
     description: rawTask.description,
     category: rawTask.category,
     id: rawTask.id,
@@ -42,13 +50,19 @@ const convertToTask = (rawTask: any): Task => {
   };
 };
 
-const convertToJson = (t: Task): any => {
+const convertTaskToJson = (t: Task): any => {
   return {
-    created_at: t.createdAt,
-    updated_at: t.updatedAt,
     description: t.description,
     category: t.category,
     id: t.id,
+    is_complete: t.isComplete,
+  };
+};
+
+const convertTaskInCreateToJson = (t: TaskInCreate): any => {
+  return {
+    description: t.description,
+    category: t.category,
     is_complete: t.isComplete,
   };
 };

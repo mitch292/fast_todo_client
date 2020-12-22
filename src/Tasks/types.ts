@@ -8,10 +8,14 @@ export enum CATEGORY {
 }
 
 export type Task = {
-  createdAt: Date;
-  updatedAt: Date;
   id: string;
   isComplete: boolean;
   description: string;
   category: CATEGORY;
+};
+
+export type TaskInCreate = {
+  description: string;
+  category: string;
+  isComplete: boolean;
 };

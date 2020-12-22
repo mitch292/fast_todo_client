@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native-web";
 
 import { TaskList } from "./TaskList";
+import { TaskForm } from "./TaskForm";
 import { getTasks } from "./services";
 import { useTaskStore } from "./useTaskStore";
 
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Tasks = () => {
+export const Tasks = (): JSX.Element => {
   const { tasks, setTasks } = useTaskStore();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -40,6 +41,7 @@ export const Tasks = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Fast Todo</Text>
+      <TaskForm />
       {isLoading ? <Text>Loading...</Text> : <TaskList taskList={tasks} />}
     </View>
   );
