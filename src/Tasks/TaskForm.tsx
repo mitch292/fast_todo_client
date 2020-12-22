@@ -2,7 +2,8 @@ import React, { useCallback } from "react";
 import { View, Text, StyleSheet, Pressable, TextInput } from "react-native-web";
 import { Formik, FormikValues } from "formik";
 import * as Yup from "yup";
-import { VscAdd } from "react-icons/vsc";
+import { VscAdd, VscChromeClose } from "react-icons/vsc";
+import { BsSlash } from "react-icons/bs";
 
 import { CATEGORY } from "./types";
 import { CATEGORY_OPTIONS } from "./util";
@@ -16,6 +17,7 @@ type Props = {
   description?: string;
   category?: CATEGORY;
   isComplete?: boolean;
+  close?: () => void;
 };
 
 const taskSchema = Yup.object().shape({
@@ -51,7 +53,13 @@ const styles = StyleSheet.create({
   },
   addButton: {
     color: "#268bd2",
-    marginHorizontal: 20,
+    paddingHorizontal: 10,
+    borderEndColor: "#002b36",
+    borderEndWidth: 1,
+  },
+  closeButton: {
+    paddingHorizontal: 10,
+    color: "#dc322f",
   },
   checkMark: {
     paddingVertical: 5,
@@ -64,6 +72,11 @@ const styles = StyleSheet.create({
   textInput: {
     padding: 5,
   },
+  buttonsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
 });
 
 export const TaskForm = ({
@@ -71,6 +84,7 @@ export const TaskForm = ({
   category = CATEGORY.MISC,
   isComplete = false,
   id,
+  close,
 }: Props): JSX.Element => {
   const { create, update } = useTaskStore();
 
@@ -162,13 +176,19 @@ export const TaskForm = ({
               />
             </View>
           </View>
-          <Pressable
-            style={styles.addButton}
-            onPress={handleSubmit as any}
-            disabled={isSubmitting}
-          >
-            <VscAdd />
-          </Pressable>
+          <View style={styles.buttonsContainer}>
+            <Pressable
+              style={styles.addButton}
+              onPress={handleSubmit as any}
+              disabled={isSubmitting}
+            >
+              <VscAdd />
+            </Pressable>
+
+            <Pressable style={styles.closeButton} onPress={close}>
+              <VscChromeClose />
+            </Pressable>
+          </View>
         </View>
       )}
     </Formik>
