@@ -17,7 +17,7 @@ type Props = {
   description?: string;
   category?: CATEGORY;
   isComplete?: boolean;
-  close?: () => void;
+  close: () => void;
 };
 
 const taskSchema = Yup.object().shape({
@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
   },
   baseCategory: {
     padding: 5,
-    maxWidth: 250,
-    minWidth: 250,
+    maxWidth: 300,
+    minWidth: 300,
     marginLeft: 10,
     color: "#002b36",
   },
@@ -112,6 +112,7 @@ export const TaskForm = ({
         }
         resetForm({});
         setStatus({ success: true });
+        close();
       } catch (error) {
         setStatus({ success: false });
         setSubmitting(false);

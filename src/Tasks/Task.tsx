@@ -1,12 +1,20 @@
-import React, { useCallback } from "react";
-import { View, StyleSheet, Text, TextStyle, Pressable } from "react-native-web";
+import React, { useCallback, useState } from "react";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TextStyle,
+  Pressable,
+  Button,
+} from "react-native-web";
 
-import { BsCheckCircle, BsTrash } from "react-icons/bs";
+import { BsCheckCircle, BsTrash, BsPencil } from "react-icons/bs";
 
 import { Task as TaskType } from "./types";
 import { categoryLookup } from "./util";
 import { useTaskStore } from "./useTaskStore";
 import { updateTask, deleteTask } from "./services";
+import { TaskForm } from "./TaskForm";
 
 type Props = {
   task: TaskType;
@@ -25,31 +33,49 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
+    alignItems: "center",
     boxShadow:
       "rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px",
   },
   baseCategory: {
     padding: 5,
     borderRightColor: "#93a1a1",
-    maxWidth: 250,
-    minWidth: 250,
+    maxWidth: 300,
+    minWidth: 300,
     borderRightWidth: 1,
     marginLeft: 10,
     color: "#002b36",
+  },
+  buttonContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
   },
   checkMark: {
     paddingVertical: 5,
     paddingHorizontal: 10,
   },
   trashCan: {
-    marginHorizontal: 20,
+    paddingHorizontal: 10,
     color: "#dc322f",
     opacity: 0.5,
+    borderEndColor: "#002b36",
+    borderEndWidth: 1,
+  },
+  pencil: {
+    color: "#002b36",
+    paddingHorizontal: 10,
   },
 });
 
 export const Task = ({ task }: Props): JSX.Element => {
   const { update, remove } = useTaskStore();
+  const [isInEdit, setIsInEdit] = useState(false);
+
+  const toggleEditMode = useCallback(() => setIsInEdit(!isInEdit), [
+    isInEdit,
+    setIsInEdit,
+  ]);
 
   const toggleTask = useCallback(async () => {
     const newTask = await updateTask({ ...task, isComplete: !task.isComplete });
@@ -68,6 +94,18 @@ export const Task = ({ task }: Props): JSX.Element => {
     additionalStyles.color = "#2aa198";
   }
 
+  if (isInEdit) {
+    return (
+      <TaskForm
+        id={task.id}
+        description={task.description}
+        category={task.category}
+        isComplete={task.isComplete}
+        close={toggleEditMode}
+      />
+    );
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.itemContainer}>
@@ -83,9 +121,13 @@ export const Task = ({ task }: Props): JSX.Element => {
           </Pressable>
         </View>
       </View>
-      <View style={styles.trashCan}>
-        <Pressable onPress={removeTask}>
+      <View style={styles.buttonContainer}>
+        <Pressable style={styles.trashCan} onPress={removeTask}>
           <BsTrash />
+        </Pressable>
+
+        <Pressable style={styles.pencil} onPress={toggleEditMode}>
+          <BsPencil />
         </Pressable>
       </View>
     </View>
