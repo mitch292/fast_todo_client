@@ -59,12 +59,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     color: "#dc322f",
     opacity: 0.5,
-    borderEndColor: "#002b36",
-    borderEndWidth: 1,
   },
   pencil: {
     color: "#002b36",
     paddingHorizontal: 10,
+    borderEndColor: "#002b36",
+    borderEndWidth: 1,
   },
 });
 
@@ -122,12 +122,12 @@ export const Task = ({ task }: Props): JSX.Element => {
         </View>
       </View>
       <View style={styles.buttonContainer}>
-        <Pressable style={styles.trashCan} onPress={removeTask}>
-          <BsTrash />
-        </Pressable>
-
         <Pressable style={styles.pencil} onPress={toggleEditMode}>
           <BsPencil />
+        </Pressable>
+
+        <Pressable style={styles.trashCan} onPress={removeTask}>
+          <BsTrash />
         </Pressable>
       </View>
     </View>
