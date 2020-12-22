@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
   },
   checkMark: {
     paddingVertical: 5,
-    paddingHorizontal: 10,
+    paddingLeft: 20,
+    paddingRight: 5,
   },
   trashCan: {
     paddingHorizontal: 10,
@@ -65,6 +66,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderEndColor: "#002b36",
     borderEndWidth: 1,
+    opacity: 0.5,
   },
 });
 
