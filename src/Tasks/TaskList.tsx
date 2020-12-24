@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native-web";
 
 import { Task } from "./Task";
-import { Task as TaskType } from "./types";
+import { TaskType } from "./types";
 
 type Props = {
   taskList?: TaskType[];

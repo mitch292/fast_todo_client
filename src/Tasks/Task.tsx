@@ -1,72 +1,27 @@
 import React, { useCallback, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  TextStyle,
-  Pressable,
-  Button,
-} from "react-native-web";
+import { View, StyleSheet, Text, TextStyle, Pressable } from "react-native-web";
 
 import { BsCheckCircle, BsTrash, BsPencil } from "react-icons/bs";
 
-import { Task as TaskType } from "./types";
+import { TaskType } from "./types";
+import { taskStyles } from "./styles";
+import { TaskForm } from "./TaskForm";
 import { categoryLookup } from "./util";
 import { useTaskStore } from "./useTaskStore";
 import { updateTask, deleteTask } from "./services";
-import { TaskForm } from "./TaskForm";
 
 type Props = {
   task: TaskType;
 };
 
-const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    flexDirection: "row",
-    padding: 15,
-    marginVertical: 5,
-    alignItems: "center",
-  },
-  itemContainer: {
-    padding: 15,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    boxShadow:
-      "rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px",
-  },
+const localStyles = StyleSheet.create({
   baseCategory: {
-    padding: 5,
     borderRightColor: "#93a1a1",
-    maxWidth: 300,
-    minWidth: 300,
     borderRightWidth: 1,
-    marginLeft: 10,
-    color: "#002b36",
-  },
-  buttonContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
   },
   checkMark: {
-    paddingVertical: 5,
     paddingLeft: 20,
     paddingRight: 5,
-  },
-  trashCan: {
-    paddingHorizontal: 10,
-    color: "#dc322f",
-    opacity: 0.5,
-  },
-  pencil: {
-    color: "#002b36",
-    paddingHorizontal: 10,
-    borderEndColor: "#002b36",
-    borderEndWidth: 1,
-    opacity: 0.5,
   },
 });
 
@@ -109,26 +64,44 @@ export const Task = ({ task }: Props): JSX.Element => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.itemContainer}>
-        <Text style={[styles.baseCategory, additionalStyles]}>
+    <View style={taskStyles.container}>
+      <View style={taskStyles.itemContainer}>
+        <Text
+          style={[
+            taskStyles.baseCategory,
+            localStyles.baseCategory,
+            additionalStyles,
+          ]}
+        >
           {task.description}
         </Text>
-        <Text style={[styles.baseCategory, additionalStyles]}>
+        <Text
+          style={[
+            taskStyles.baseCategory,
+            localStyles.baseCategory,
+            additionalStyles,
+          ]}
+        >
           {categoryLookup[task.category]}
         </Text>
-        <View style={[styles.checkMark, additionalStyles]}>
+        <View
+          style={[
+            taskStyles.checkMark,
+            localStyles.checkMark,
+            additionalStyles,
+          ]}
+        >
           <Pressable onPress={toggleTask}>
             <BsCheckCircle />
           </Pressable>
         </View>
       </View>
-      <View style={styles.buttonContainer}>
-        <Pressable style={styles.pencil} onPress={toggleEditMode}>
+      <View style={taskStyles.buttonsContainer}>
+        <Pressable style={taskStyles.actionIcon} onPress={toggleEditMode}>
           <BsPencil />
         </Pressable>
 
-        <Pressable style={styles.trashCan} onPress={removeTask}>
+        <Pressable style={taskStyles.negativeIcon} onPress={removeTask}>
           <BsTrash />
         </Pressable>
       </View>

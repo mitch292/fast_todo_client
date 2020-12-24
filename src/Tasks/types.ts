@@ -7,7 +7,7 @@ export enum CATEGORY {
   MISC = "miscellaneous",
 }
 
-export type Task = {
+export type TaskType = {
   id: string;
   isComplete: boolean;
   description: string;
