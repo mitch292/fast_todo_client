@@ -5,8 +5,7 @@ import { Formik, FormikValues } from "formik";
 import * as Yup from "yup";
 
 import { authStyles } from "./styles";
-import { registerUser } from "./services";
-import { useAuthStore } from "./useAuthStore";
+import { useStore } from "../store";
 
 const registerSchema = Yup.object().shape({
   username: Yup.string().required("Required"),
@@ -16,17 +15,19 @@ const registerSchema = Yup.object().shape({
 export const Register = (): JSX.Element => {
   const history = useHistory();
   const {
-    token: { setToken },
-  } = useAuthStore();
+    auth: { register },
+  } = useStore();
 
+  const switchToLogin = useCallback(() => {
+    history.push("/login");
+  }, [history]);
   const submitHandler = useCallback(
     async (
       { username, password }: FormikValues,
       { setSubmitting, setErrors, setStatus, resetForm }
     ) => {
       try {
-        const token = await registerUser({ username, password });
-        setToken(token);
+        await register({ username, password });
         resetForm({});
         setStatus({ success: true });
         history.push("/tasks");
@@ -36,7 +37,7 @@ export const Register = (): JSX.Element => {
         setErrors({ submit: error.message });
       }
     },
-    [setToken, history]
+    [register, history]
   );
 
   return (
@@ -98,6 +99,12 @@ export const Register = (): JSX.Element => {
                 disabled={isSubmitting}
               >
                 <Text style={authStyles.buttonText}>Register</Text>
+              </Pressable>
+              <Pressable
+                style={authStyles.linkContainer}
+                onPress={switchToLogin}
+              >
+                <Text style={authStyles.linkText}>Already a user? Login.</Text>
               </Pressable>
             </View>
           )}

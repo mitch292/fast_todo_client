@@ -90,4 +90,13 @@ export const authStyles = StyleSheet.create({
     color: "white",
     fontSize: 16,
   },
+  linkContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  linkText: {
+    color: "#586e75",
+    fontSize: 12,
+  },
 });

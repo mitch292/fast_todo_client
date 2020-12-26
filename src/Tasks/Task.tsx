@@ -7,8 +7,7 @@ import { TaskType } from "./types";
 import { taskStyles } from "./styles";
 import { TaskForm } from "./TaskForm";
 import { categoryLookup } from "./util";
-import { useTaskStore } from "./useTaskStore";
-import { updateTask, deleteTask } from "./services";
+import { useStore } from "../store";
 
 type Props = {
   task: TaskType;
@@ -26,7 +25,9 @@ const localStyles = StyleSheet.create({
 });
 
 export const Task = ({ task }: Props): JSX.Element => {
-  const { update, remove } = useTaskStore();
+  const {
+    tasks: { update, remove },
+  } = useStore();
   const [isInEdit, setIsInEdit] = useState(false);
 
   const toggleEditMode = useCallback(() => setIsInEdit(!isInEdit), [
@@ -35,13 +36,11 @@ export const Task = ({ task }: Props): JSX.Element => {
   ]);
 
   const toggleTask = useCallback(async () => {
-    const newTask = await updateTask({ ...task, isComplete: !task.isComplete });
-    update(newTask);
+    await update({ ...task, isComplete: !task.isComplete });
   }, [task, update]);
 
   const removeTask = useCallback(async () => {
-    await deleteTask(task);
-    remove(task);
+    await remove(task);
   }, [task, remove]);
 
   const additionalStyles: TextStyle = {};

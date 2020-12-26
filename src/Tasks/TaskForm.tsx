@@ -7,7 +7,7 @@ import { VscAdd, VscChromeClose } from "react-icons/vsc";
 import { CATEGORY } from "./types";
 import { CATEGORY_OPTIONS } from "./util";
 import { createTask, updateTask } from "./services";
-import { useTaskStore } from "./useTaskStore";
+import { useStore } from "../store";
 import { CategorySelect } from "./CategorySelect";
 import { IsCompleteCheckbox } from "./IsCompleteCheckbox";
 import { taskStyles } from "./styles";
@@ -48,7 +48,9 @@ export const TaskForm = ({
   id,
   close,
 }: Props): JSX.Element => {
-  const { create, update } = useTaskStore();
+  const {
+    tasks: { create, update },
+  } = useStore();
 
   const submitHandler = useCallback(
     async (
@@ -57,20 +59,18 @@ export const TaskForm = ({
     ) => {
       try {
         if (id) {
-          const newTask = await updateTask({
+          await update({
             id,
             description,
             category,
             isComplete,
           });
-          update(newTask);
         } else {
-          const task = await createTask({
+          await create({
             description,
             category,
             isComplete,
           });
-          create(task);
         }
         resetForm({});
         setStatus({ success: true });

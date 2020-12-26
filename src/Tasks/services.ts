@@ -4,7 +4,10 @@ import { TaskType, TaskInCreate } from "./types";
 
 export const getTasks = async (): Promise<TaskType[]> => {
   try {
-    const { data } = await axios.get("http://localhost:8000/tasks/");
+    const { data } = await axios.get(
+      "http://localhost:8000/tasks/",
+      getAxiosConfig()
+    );
     return data.map((t: any) => convertToTask(t));
   } catch (error) {
     throw Error("Not able to fetch all tasks.");
@@ -12,9 +15,13 @@ export const getTasks = async (): Promise<TaskType[]> => {
 };
 export const createTask = async (t: TaskInCreate): Promise<TaskType> => {
   try {
-    const { data } = await axios.post(`http://localhost:8000/tasks/`, {
-      ...convertTaskInCreateToJson(t),
-    });
+    const { data } = await axios.post(
+      `http://localhost:8000/tasks/`,
+      {
+        ...convertTaskInCreateToJson(t),
+      },
+      getAxiosConfig()
+    );
     return convertToTask(data);
   } catch (error) {
     throw Error("Not able to create the task.");
@@ -23,9 +30,13 @@ export const createTask = async (t: TaskInCreate): Promise<TaskType> => {
 
 export const updateTask = async (t: TaskType): Promise<TaskType> => {
   try {
-    const { data } = await axios.put(`http://localhost:8000/tasks/${t.id}/`, {
-      ...convertTaskToJson(t),
-    });
+    const { data } = await axios.put(
+      `http://localhost:8000/tasks/${t.id}/`,
+      {
+        ...convertTaskToJson(t),
+      },
+      getAxiosConfig()
+    );
     return convertToTask(data);
   } catch (error) {
     throw Error("Not able to update the task.");
@@ -34,7 +45,10 @@ export const updateTask = async (t: TaskType): Promise<TaskType> => {
 
 export const deleteTask = async (t: TaskType): Promise<string> => {
   try {
-    await axios.delete(`http://localhost:8000/tasks/${t.id}/`);
+    await axios.delete(
+      `http://localhost:8000/tasks/${t.id}/`,
+      getAxiosConfig()
+    );
     return t.id;
   } catch (error) {
     throw Error("Not able to delete the task.");
@@ -66,3 +80,9 @@ const convertTaskInCreateToJson = (t: TaskInCreate): any => {
     is_complete: t.isComplete,
   };
 };
+
+export const getAxiosConfig = (): any => ({
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+  },
+});

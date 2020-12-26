@@ -1,11 +1,13 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native-web";
+import { Link } from "react-router-dom";
 import { VscAdd } from "react-icons/vsc";
 
 import { TaskList } from "./TaskList";
 import { TaskForm } from "./TaskForm";
-import { getTasks } from "./services";
-import { useTaskStore } from "./useTaskStore";
+import { useStore } from "../store";
+import { AUTH_STATUS } from "../Auth";
+import { taskStyles } from "./styles";
 
 const styles = StyleSheet.create({
   container: {
@@ -23,12 +25,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignSelf: "center",
   },
-  text: {
-    fontSize: 18,
-    color: "#586e75",
-    display: "flex",
-    alignItems: "center",
-  },
   addContainer: {
     display: "flex",
     flexDirection: "row",
@@ -41,8 +37,10 @@ const styles = StyleSheet.create({
 });
 
 export const Tasks = (): JSX.Element => {
-  const { tasks, setTasks } = useTaskStore();
-  const [isLoading, setIsLoading] = useState(true);
+  const {
+    auth: { status },
+  } = useStore();
+
   const [isNewTaskFormOpen, setIsNewTaskFormOpen] = useState(false);
 
   const toggleForm = useCallback(
@@ -50,14 +48,9 @@ export const Tasks = (): JSX.Element => {
     [isNewTaskFormOpen, setIsNewTaskFormOpen]
   );
 
-  useEffect(() => {
-    const fetchTasks = async () => {
-      const tasks = await getTasks();
-      setTasks(tasks);
-      setIsLoading(false);
-    };
-    fetchTasks();
-  }, []);
+  if (status !== AUTH_STATUS.AUTHENTICATED) {
+    return <Link to="/login">Please login to continue</Link>;
+  }
 
   return (
     <View style={styles.container}>
@@ -68,7 +61,7 @@ export const Tasks = (): JSX.Element => {
         ) : (
           <View style={styles.addContainer}>
             <Pressable onPress={toggleForm}>
-              <Text style={styles.text}>
+              <Text style={taskStyles.text}>
                 Add a task
                 <View style={styles.addButton}>
                   <VscAdd />
@@ -78,11 +71,7 @@ export const Tasks = (): JSX.Element => {
           </View>
         )}
       </View>
-      {isLoading ? (
-        <Text style={styles.text}>Loading...</Text>
-      ) : (
-        <TaskList taskList={tasks} />
-      )}
+      <TaskList />
     </View>
   );
 };

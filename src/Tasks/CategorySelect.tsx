@@ -74,11 +74,6 @@ export const CategorySelect = ({
       height: 36,
       minHeight: 36,
     }),
-    // valueContainer: (base: any) => ({
-    //   ...base,
-    //   height: 36,
-    //   minHeight: 36,
-    // }),
   };
 
   return (

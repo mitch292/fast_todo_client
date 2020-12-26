@@ -6,6 +6,7 @@ export * from "./styles";
 export * from "./services";
 export * from "./TaskList";
 export * from "./TaskForm";
-export * from "./useTaskStore";
 export * from "./CategorySelect";
 export * from "./IsCompleteCheckbox";
+import * as taskSlice from "./taskSlice";
+export { taskSlice };

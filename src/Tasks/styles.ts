@@ -53,4 +53,10 @@ export const taskStyles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
   },
+  text: {
+    fontSize: 18,
+    color: "#586e75",
+    display: "flex",
+    alignItems: "center",
+  },
 });
